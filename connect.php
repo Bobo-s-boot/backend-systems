@@ -1,13 +1,19 @@
 <?php
 $host = '127.0.0.1';
-$db   = 'iteh2lb1var4';
-$user = 'root'; 
-$pass = '';     
+$db   = 'iteh2lb1var4'; 
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Помилка підключення до бази даних: " . $e->getMessage());
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    die("Помилка підключення до БД: " . $e->getMessage());
 }
 ?>

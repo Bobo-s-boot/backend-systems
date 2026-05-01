@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ІДЗ Vue.js: Поліклініка</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <h2>🏥 БД "Поліклініка" (Vue.js + JSON API)</h2>
+
+      <div class="card">
+        <h3>1. Медсестри за відділенням</h3>
+        <select v-model="depValue">
+          <option value="1">Відділення 1</option>
+          <option value="2">Відділення 2</option>
+          <option value="3">Відділення 3</option>
+          <option value="4">Відділення 4</option>
+        </select>
+        <button @click="fetchData('department', depValue)">Знайти</button>
+      </div>
+
+      <div class="card">
+        <h3>2. Палати вибраної медсестри</h3>
+        <select v-model="nurseValue">
+          <option value="ivanova">ivanova</option>
+          <option value="petrova">petrova</option>
+          <option value="sidorova">sidorova</option>
+          <option value="egorova">egorova</option>
+          <option value="smirnova">smirnova</option>
+        </select>
+        <button @click="fetchData('wards', nurseValue)">Показати палати</button>
+      </div>
+
+      <div class="card">
+        <h3>3. Медсестри за зміною</h3>
+        <select v-model="shiftValue">
+          <option value="First">Перша зміна (First)</option>
+          <option value="Second">Друга зміна (Second)</option>
+          <option value="Third">Третя зміна (Third)</option>
+        </select>
+        <button @click="fetchData('shift', shiftValue)">Показати зміну</button>
+      </div>
+
+      <div class="card" v-if="results.length > 0 || lastQueryType">
+        <h3>Результати:</h3>
+        <p v-if="loading" class="loading">Завантаження...</p>
+
+        <ul class="result-list" v-else>
+          <li v-for="item in results" :key="item.name || item.ward_name">
+            <span v-if="item.ward_name"
+              >📍 Палата: <strong>{{ item.ward_name }}</strong></span
+            >
+            <span v-else-if="item.department"
+              >👩‍⚕️ {{ item.name }} (Відділення: {{ item.department }})</span
+            >
+            <span v-else>👩‍⚕️ Медсестра: <strong>{{ item.name }}</strong></span>
+          </li>
+          <li v-if="results.length === 0 && !loading">
+            Нічого не знайдено за цим критерієм.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
